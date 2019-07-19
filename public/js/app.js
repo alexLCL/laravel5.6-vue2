@@ -60133,11 +60133,11 @@ var api_url = '';
 
 switch ("development") {
     case 'development':
-        api_url = 'http://127.0.0.1:8000/api/v1';
+        api_url = 'http://localhost:8000/api/v1';
         break;
 
     case 'production':
-        api_url = 'http://127.0.0.1:8000/api/v1';
+        api_url = 'http://localhost:8000/api/v1';
         break;
 }
 
