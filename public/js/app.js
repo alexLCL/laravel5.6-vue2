@@ -57572,12 +57572,15 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__config__ = __webpack_require__(83);
 //
 //
 //
 //
 //
 //
+
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
@@ -57602,7 +57605,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     data: function data() {
         return {
-            markers: []
+            markers: [],
+            infoWindows: []
         };
     },
     mounted: function mounted() {
@@ -57626,11 +57630,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     methods: {
         buildMarkers: function buildMarkers() {
+            var image = __WEBPACK_IMPORTED_MODULE_0__config__["a" /* ROAST_CONFIG */].APP_URL + '/storage/img/coffee-marker.png';
+            var icon = new BMap.Icon(image, new BMap.Size(19, 33));
+
             for (var i = 0; i < this.cafes.length; i++) {
                 var new_point = new BMap.Point(parseFloat(this.cafes[i].longitude), parseFloat(this.cafes[i].latitude));
-                var marker = new BMap.Marker(new_point); // 创建标注
+                var marker = new BMap.Marker(new_point, { icon: icon }); // 创建标注
                 this.map.addOverlay(marker); // 将标注添加到地图中
                 this.map.panTo(new_point);
+                marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+
                 var opts = {
                     width: 200, // 信息窗口宽度
                     height: 100, // 信息窗口高度
@@ -60704,20 +60713,24 @@ var cafes = {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ROAST_CONFIG; });
 var api_url = '';
+var app_url = '';
 var baidu_map_js_api_key = 'bCcG2SWs9UauzYUVsrf7TDN53BYPXGP1';
 
 switch ("development") {
     case 'development':
         api_url = 'http://localhost:8000/api/v1';
+        app_url = 'http://localhost:8000';
         break;
 
     case 'production':
         api_url = 'http://localhost:8000/api/v1';
+        app_url = 'http://localhost:8000';
         break;
 }
 
 var ROAST_CONFIG = {
     API_URL: api_url,
+    APP_URL: app_url,
     BAIDU_MAPS_JS_API_KEY: baidu_map_js_api_key
 };
 

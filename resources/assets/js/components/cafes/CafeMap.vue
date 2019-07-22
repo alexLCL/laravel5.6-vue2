@@ -5,6 +5,8 @@
 </template>
 
 <script>
+    import {ROAST_CONFIG} from "../../../config";
+
     export default {
         props: {
             'latitude': {  // 经度
@@ -28,7 +30,8 @@
         },
         data() {
             return {
-                markers:[]
+                markers:[],
+                infoWindows:[]
             }
         },
         mounted(){
@@ -53,11 +56,16 @@
         },
         methods:{
             buildMarkers(){
+                var image = ROAST_CONFIG.APP_URL + '/storage/img/coffee-marker.png';
+                var icon = new BMap.Icon(image,new BMap.Size(19,33));
+
                 for (var i =0; i<this.cafes.length; i++){
                     var new_point = new BMap.Point(parseFloat(this.cafes[i].longitude),parseFloat(this.cafes[i].latitude));
-                    var marker = new BMap.Marker(new_point);  // 创建标注
+                    var marker = new BMap.Marker(new_point,{icon:icon});  // 创建标注
                     this.map.addOverlay(marker);              // 将标注添加到地图中
                     this.map.panTo(new_point);
+                    marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+
                     var opts = {
                         width : 200,     // 信息窗口宽度
                         height: 100,     // 信息窗口高度
