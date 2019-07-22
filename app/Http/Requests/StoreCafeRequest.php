@@ -49,7 +49,7 @@ class StoreCafeRequest extends FormRequest
             'state.required'    => '咖啡店所在省份不能为空',
             'state.max'    => '咖啡店所在省份超过10个字符',
             'state.min'    => '咖啡店所在省份低于2个字符',
-            
+
             'zip.required'      => '咖啡店邮编不能为空',
             'zip.regex'         => '无效的邮政编码'
         ];

@@ -39,6 +39,10 @@ return [
         'client_id' => env('GIT_CLIENT_ID'),
         'client_secret' => env('GIT_CLIENT_SECRET'),
         'redirect' => env('GIT_REDIRECT')
+    ],
+
+    'baidu_map'=>[
+        'map_api_key'=>env('BAIDU_MAP_APK')
     ]
 
 ];

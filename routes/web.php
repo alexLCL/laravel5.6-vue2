@@ -33,3 +33,4 @@ Route::get( '/auth/{social}', 'Web\AuthenticationController@getSocialRedirect' )
 
 Route::get( '/auth/{social}/callback', 'Web\AuthenticationController@getSocialCallback' )
     ->middleware('guest');
+

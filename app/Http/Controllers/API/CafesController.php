@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\Cafe;
+use App\Utilities\BaiduMap;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCafeRequest;
@@ -47,6 +48,10 @@ class CafesController extends Controller
         $cafe->city     = $request->input('city');
         $cafe->state    = $request->input('state');
         $cafe->zip      = $request->input('zip');
+
+        $coordinates = BaiduMap::geocodeAddress($cafe->address,$cafe->city,$cafe->state);
+        $cafe->latitude = $coordinates['lat'];
+        $cafe->longitude=$coordinates['lng'];
 
         $cafe->save();
 
