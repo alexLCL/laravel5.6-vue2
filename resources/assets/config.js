@@ -1,4 +1,5 @@
 var api_url='';
+var baidu_map_js_api_key='bCcG2SWs9UauzYUVsrf7TDN53BYPXGP1';
 
 switch (process.env.NODE_ENV) {
     case 'development':
@@ -11,5 +12,6 @@ switch (process.env.NODE_ENV) {
 }
 
 export const ROAST_CONFIG={
-    API_URL:api_url
+    API_URL:api_url,
+    BAIDU_MAPS_JS_API_KEY:baidu_map_js_api_key
 }
