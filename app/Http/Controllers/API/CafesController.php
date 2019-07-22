@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Models\Cafe;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCafeRequest;
 
 class CafesController extends Controller
 {
@@ -38,14 +39,14 @@ class CafesController extends Controller
      * Date: 2019/7/19
      * Time: 15:21
      */
-    public function postNewCafe(Request $request){
+    public function postNewCafe(StoreCafeRequest $request){
         $cafe = new Cafe();
 
-        $cafe->name = $request->name;
-        $cafe->address = $request->address;
-        $cafe->city = $request->city;
-        $cafe->state = $request->state;
-        $cafe->zip = $request->zip;
+        $cafe->name     = $request->input('name');
+        $cafe->address  = $request->input('address');
+        $cafe->city     = $request->input('city');
+        $cafe->state    = $request->input('state');
+        $cafe->zip      = $request->input('zip');
 
         $cafe->save();
 
