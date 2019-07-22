@@ -57600,7 +57600,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         'zoom': { // 缩放级别
             type: Number,
             default: function _default() {
-                return 15;
+                return 5;
             }
         }
     },

@@ -24,7 +24,7 @@
             'zoom': {   // 缩放级别
                 type: Number,
                 default: function () {
-                    return 15
+                    return 5
                 }
             }
         },
