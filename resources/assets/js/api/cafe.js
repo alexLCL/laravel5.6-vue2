@@ -1,4 +1,4 @@
-import {ROAST_CONFIG} from "../../config";
+import {ROAST_CONFIG} from "../config";
 
 export default {
     getCafes:function () {

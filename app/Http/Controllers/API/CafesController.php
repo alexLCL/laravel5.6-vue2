@@ -18,7 +18,7 @@ class CafesController extends Controller
      * Time: 15:21
      */
     public function getCafes(){
-        $cafes = Cafe::all();
+        $cafes = Cafe::with('brewMethods')->get();
         return response()->json($cafes);
     }
 
@@ -30,7 +30,7 @@ class CafesController extends Controller
      * @param $id
      */
     public function getCafe($id){
-        $cafe = Cafe::where('id','=',$id)->findOrFail();
+        $cafe = Cafe::where('id','=',$id)->with('brewMethods')->first();
         return response()->json($cafe);
     }
 

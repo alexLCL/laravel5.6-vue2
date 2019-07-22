@@ -56924,6 +56924,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     created: function created() {
         this.$store.dispatch('loadCafes');
+        this.$store.dispatch('loadBrewMethods');
     }
 });
 
@@ -57572,7 +57573,7 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__config__ = __webpack_require__(83);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__config__ = __webpack_require__(94);
 //
 //
 //
@@ -58345,18 +58346,25 @@ if (false) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(80);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modules_cafes__ = __webpack_require__(81);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modules_cafes_js__ = __webpack_require__(81);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_users_js__ = __webpack_require__(90);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modules_brewMethods__ = __webpack_require__(92);
 __webpack_require__(79).polyfill();
+
+
+
+
 
 
 
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */]);
 
-
 /* harmony default export */ __webpack_exports__["a"] = (new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     modules: {
-        cafes: __WEBPACK_IMPORTED_MODULE_2__modules_cafes__["a" /* cafes */]
+        cafes: __WEBPACK_IMPORTED_MODULE_2__modules_cafes_js__["a" /* cafes */],
+        users: __WEBPACK_IMPORTED_MODULE_3__modules_users_js__["a" /* users */],
+        brewMethods: __WEBPACK_IMPORTED_MODULE_4__modules_brewMethods__["a" /* brewMethods */]
     }
 }));
 
@@ -60683,7 +60691,7 @@ var cafes = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__config__ = __webpack_require__(83);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__config__ = __webpack_require__(94);
 
 
 /* harmony default export */ __webpack_exports__["a"] = ({
@@ -60707,34 +60715,7 @@ var cafes = {
 });
 
 /***/ }),
-/* 83 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ROAST_CONFIG; });
-var api_url = '';
-var app_url = '';
-var baidu_map_js_api_key = 'bCcG2SWs9UauzYUVsrf7TDN53BYPXGP1';
-
-switch ("development") {
-    case 'development':
-        api_url = 'http://localhost:8000/api/v1';
-        app_url = 'http://localhost:8000';
-        break;
-
-    case 'production':
-        api_url = 'http://localhost:8000/api/v1';
-        app_url = 'http://localhost:8000';
-        break;
-}
-
-var ROAST_CONFIG = {
-    API_URL: api_url,
-    APP_URL: app_url,
-    BAIDU_MAPS_JS_API_KEY: baidu_map_js_api_key
-};
-
-/***/ }),
+/* 83 */,
 /* 84 */
 /***/ (function(module, exports) {
 
@@ -60782,6 +60763,295 @@ exports.push([module.i, "\nbody, html {width: 100%;height: 100%;margin:0;font-fa
 
 // exports
 
+
+/***/ }),
+/* 90 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return users; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api_user_js__ = __webpack_require__(91);
+/*
+ |-------------------------------------------------------------------------------
+ | VUEX modules/users.js
+ |-------------------------------------------------------------------------------
+ | The Vuex data store for the users
+ */
+
+
+
+var users = {
+    /*
+     Defines the state being monitored for the module.
+     */
+    state: {
+        user: {},
+        userLoadStatus: 0,
+        userUpdateStatus: 0
+    },
+
+    /*
+     Defines the actions used to retrieve the data.
+     */
+    actions: {
+        loadUser: function loadUser(_ref) {
+            var commit = _ref.commit;
+
+            commit('setUserLoadStatus', 1);
+
+            __WEBPACK_IMPORTED_MODULE_0__api_user_js__["a" /* default */].getUser().then(function (response) {
+                commit('setUser', response.data);
+                commit('setUserLoadStatus', 2);
+            }).catch(function () {
+                commit('setUser', {});
+                commit('setUserLoadStatus', 3);
+            });
+        },
+
+        /*
+         Edits a user
+         */
+        editUser: function editUser(_ref2, data) {
+            var commit = _ref2.commit,
+                state = _ref2.state,
+                dispatch = _ref2.dispatch;
+
+            commit('setUserUpdateStatus', 1);
+
+            __WEBPACK_IMPORTED_MODULE_0__api_user_js__["a" /* default */].putUpdateUser(data.public_visibility, data.favorite_coffee, data.flavor_notes, data.city, data.state).then(function (response) {
+                commit('setUserUpdateStatus', 2);
+                dispatch('loadUser');
+            }).catch(function () {
+                commit('setUserUpdateStatus', 3);
+            });
+        },
+
+        /*
+         Logs out a user and clears the status and user pieces of
+         state.
+         */
+        logoutUser: function logoutUser(_ref3) {
+            var commit = _ref3.commit;
+
+            commit('setUserLoadStatus', 0);
+            commit('setUser', {});
+        }
+    },
+
+    /*
+     Defines the mutations used
+     */
+    mutations: {
+        /*
+         Sets the user load status
+         */
+        setUserLoadStatus: function setUserLoadStatus(state, status) {
+            state.userLoadStatus = status;
+        },
+
+        /*
+         Sets the user
+         */
+        setUser: function setUser(state, user) {
+            state.user = user;
+        },
+
+        /*
+         Sets the user update status
+         */
+        setUserUpdateStatus: function setUserUpdateStatus(state, status) {
+            state.userUpdateStatus = status;
+        }
+    },
+
+    /*
+     Defines the getters used by the module.
+     */
+    getters: {
+        /*
+         Returns the user load status.
+         */
+        getUserLoadStatus: function getUserLoadStatus(state) {
+            // return function () {
+            //     return state.userLoadStatus;
+            // }
+            return state.userLoadStatus;
+        },
+
+        /*
+         Returns the user.
+         */
+        getUser: function getUser(state) {
+            return state.user;
+        },
+
+        /*
+         Gets the user update status
+         */
+        getUserUpdateStatus: function getUserUpdateStatus(state, status) {
+            return state.userUpdateStatus;
+        }
+    }
+};
+
+/***/ }),
+/* 91 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__config_js__ = __webpack_require__(94);
+/**
+ * Imports the Roast API URL from the config.
+ */
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+    /*
+     GET   /api/v1/user
+     */
+    getUser: function getUser() {
+        return axios.get(__WEBPACK_IMPORTED_MODULE_0__config_js__["a" /* ROAST_CONFIG */].API_URL + '/user');
+    },
+
+    /*
+     PUT  /api/v1/user
+     */
+    putUpdateUser: function putUpdateUser(public_visibility, favorite_coffee, flavor_notes, city, state) {
+        return axios.put(__WEBPACK_IMPORTED_MODULE_0__config_js__["a" /* ROAST_CONFIG */].API_URL + '/user', {
+            public_visibility: public_visibility,
+            favorite_coffee: favorite_coffee,
+            flavor_notes: flavor_notes,
+            city: city,
+            state: state
+        });
+    }
+});
+
+/***/ }),
+/* 92 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return brewMethods; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api_brewMethod_js__ = __webpack_require__(93);
+/*
+|-------------------------------------------------------------------------------
+| VUEX modules/brewmethods.js
+|-------------------------------------------------------------------------------
+| The Vuex data store for the brew methods
+*/
+
+
+var brewMethods = {
+    /**
+     * Defines the state being monitored for the module
+     */
+    state: {
+        brewMethods: [],
+        brewMethodsLoadStatus: 0
+    },
+
+    /**
+     * Defines the actions used by the Vuex module.
+     */
+    actions: {
+        // Loads all of the brew methods.
+        loadBrewMethods: function loadBrewMethods(_ref) {
+            var commit = _ref.commit;
+
+            commit('setBrewMethodsLoadStatus', 1);
+
+            // Calls the API to load the brew methods.
+            __WEBPACK_IMPORTED_MODULE_0__api_brewMethod_js__["a" /* default */].getBrewMethods().then(function (response) {
+                // Sets the brew methods on a successful response.
+                commit('setBrewMethods', response.data);
+                commit('setBrewMethodsLoadStatus', 2);
+            }).catch(function () {
+                // Clears the brew methods on failure.
+                commit('setBrewMethods', []);
+                commit('setBrewMethodsLoadStatus', 3);
+            });
+        }
+    },
+
+    /**
+     * Defines the mutations used by the module.
+     */
+    mutations: {
+        // Sets the brew method load status.
+        setBrewMethodsLoadStatus: function setBrewMethodsLoadStatus(state, status) {
+            state.brewMethodsLoadStatus = status;
+        },
+
+        // Sets the brew methods.
+        setBrewMethods: function setBrewMethods(state, brewMethods) {
+            state.brewMethods = brewMethods;
+        }
+    },
+
+    /**
+     * Defines the getters used by the module.
+     */
+    getters: {
+        // Returns the brew methods.
+        getBrewMethods: function getBrewMethods(state) {
+            return state.brewMethods;
+        },
+
+        // Returns the brew methods load status.
+        getBrewMethodsLoadStatus: function getBrewMethodsLoadStatus(state) {
+            return state.brewMethodsLoadStatus;
+        }
+    }
+};
+
+/***/ }),
+/* 93 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__config_js__ = __webpack_require__(94);
+/**
+ * Imports the Roast API URL from the config.
+ */
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  /*
+   GET   /api/v1/brew-methods
+   */
+  getBrewMethods: function getBrewMethods() {
+    return axios.get(__WEBPACK_IMPORTED_MODULE_0__config_js__["a" /* ROAST_CONFIG */].API_URL + '/brew-methods');
+  }
+});
+
+/***/ }),
+/* 94 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ROAST_CONFIG; });
+var api_url = '';
+var app_url = '';
+var baidu_map_js_api_key = 'bCcG2SWs9UauzYUVsrf7TDN53BYPXGP1';
+
+switch ("development") {
+    case 'development':
+        api_url = 'http://localhost:8000/api/v1';
+        app_url = 'http://localhost:8000';
+        break;
+
+    case 'production':
+        api_url = 'http://localhost:8000/api/v1';
+        app_url = 'http://localhost:8000';
+        break;
+}
+
+var ROAST_CONFIG = {
+    API_URL: api_url,
+    APP_URL: app_url,
+    BAIDU_MAPS_JS_API_KEY: baidu_map_js_api_key
+};
 
 /***/ })
 /******/ ]);

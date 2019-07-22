@@ -3,11 +3,16 @@ require('es6-promise').polyfill()
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+import {cafes} from './modules/cafes.js';
+import {users} from './modules/users.js';
+import {brewMethods} from './modules/brewMethods';
+
 Vue.use(Vuex)
-import {cafes} from "./modules/cafes";
 
 export default new Vuex.Store({
     modules:{
-        cafes
+        cafes,
+        users,
+        brewMethods
     }
 })
